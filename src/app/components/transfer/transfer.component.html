@@ -1,0 +1,25 @@
+<div class="container mt-4">
+  <h2 style="text-align: center">Transfers List</h2>
+  <table class="table table-striped" style="margin-top: 80px">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nom</th>
+      <th>Amount</th>
+      <th>Transfer Date</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let transfer of transfers">
+      <td>{{ transfer.id }}</td>
+      <td>{{ transfer.name }}</td>
+      <td>{{ transfer.amount }}</td>
+      <td>{{ transfer.transferDate | date }}</td>
+      <td>
+        <button class="btn btn-danger btn-sm" (click)="deleteTransfer(transfer.id)">Delete</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
