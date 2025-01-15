@@ -1,10 +1,17 @@
-<div class="container mt-4">
-  <h2 style="text-align: center">Transfers List</h2>
-  <table class="table table-striped" style="margin-top: 80px">
+<div class="container mt-4 transfer-list-container">
+  <h2 class="text-center title">Transfers List</h2>
+  <div class="actions">
+    <button mat-raised-button color="primary" class="add-button" (click)="openAddDialog()">
+      <mat-icon>add</mat-icon>
+      Add Transfer
+    </button>
+  </div>
+
+  <table class="table table-striped table-custom mt-3">
     <thead>
     <tr>
       <th>ID</th>
-      <th>Nom</th>
+      <th>Name</th>
       <th>Amount</th>
       <th>Transfer Date</th>
       <th>Actions</th>
@@ -14,10 +21,15 @@
     <tr *ngFor="let transfer of transfers">
       <td>{{ transfer.id }}</td>
       <td>{{ transfer.name }}</td>
-      <td>{{ transfer.amount }}</td>
+      <td>{{ transfer.amount | currency:'USD':'symbol':'1.2-2' }}</td>
       <td>{{ transfer.transferDate | date }}</td>
       <td>
-        <button class="btn btn-danger btn-sm" (click)="deleteTransfer(transfer.id)">Delete</button>
+        <button mat-icon-button color="primary" class="action-button" (click)="openUpdateDialog(transfer)" matTooltip="Update Transfer">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" class="action-button" (click)="deleteTransfer(transfer.id)" matTooltip="Delete Transfer">
+          <mat-icon>delete</mat-icon>
+        </button>
       </td>
     </tr>
     </tbody>

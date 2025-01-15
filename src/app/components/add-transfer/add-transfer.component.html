@@ -1,0 +1,21 @@
+<h2 mat-dialog-title class="dialog-title">Add Transfer</h2>
+<mat-dialog-content>
+  <form>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Name</mat-label>
+      <input matInput [(ngModel)]="transfer.name" name="name" required />
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Amount</mat-label>
+      <input matInput type="number" [(ngModel)]="transfer.amount" name="amount" required />
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Transfer Date</mat-label>
+      <input matInput type="date" [(ngModel)]="transfer.transferDate" name="transferDate" required />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end" class="dialog-actions">
+  <button mat-button (click)="close()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="save()">Save</button>
+</mat-dialog-actions>

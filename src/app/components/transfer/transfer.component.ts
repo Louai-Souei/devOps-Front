@@ -1,27 +1,21 @@
-import {Component, OnInit} from '@angular/core';
-
-import {Transfer} from '../../entity/Transfer';
-import {TransferService} from '../../services/transfer/transfer.service';
-import {FormsModule} from '@angular/forms';
-import {DatePipe, NgForOf} from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { TransferService } from '../../services/transfer/transfer.service';
+import { Transfer } from '../../entity/Transfer';
+import {AddTransferComponent} from '../add-transfer/add-transfer.component';
+import {UpdateTransferComponent} from '../update-transfer/update-transfer.component';
 
 @Component({
   selector: 'app-transfer',
+  standalone: false,
+
   templateUrl: './transfer.component.html',
-  standalone: true,
-  imports: [
-    FormsModule,
-    NgForOf,
-    DatePipe
-  ],
-  styleUrls: ['./transfer.component.css']
+  styleUrls: ['./transfer.component.css'],
 })
 export class TransferComponent implements OnInit {
   transfers: Transfer[] = [];
-  selectedTransfer: Transfer = new Transfer();
 
-  constructor(private transferService: TransferService) {
-  }
+  constructor(private transferService: TransferService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.loadTransfers();
@@ -33,20 +27,25 @@ export class TransferComponent implements OnInit {
     });
   }
 
-  selectTransfer(transfer: Transfer): void {
-    this.selectedTransfer = {...transfer};
+  openAddDialog(): void {
+    const dialogRef = this.dialog.open(AddTransferComponent);
+
+    dialogRef.afterClosed().subscribe((result: Transfer) => {
+      if (result) {
+        console.log(result)
+        this.transferService.addTransfer(result).subscribe(() => this.loadTransfers());
+      }
+    });
   }
 
-  updateTransfer(): void {
-    this.transferService.updateTransfer(this.selectedTransfer.id, this.selectedTransfer).subscribe(
-      (updatedTransfer) => {
-        console.log('Transfer updated:', updatedTransfer);
-        this.loadTransfers();
-      },
-      (error) => {
-        console.error('Error updating transfer:', error);
+  openUpdateDialog(transfer: Transfer): void {
+    const dialogRef = this.dialog.open(UpdateTransferComponent, { data: { ...transfer } });
+
+    dialogRef.afterClosed().subscribe((result: Transfer) => {
+      if (result) {
+        this.transferService.updateTransfer(result.id, result).subscribe(() => this.loadTransfers());
       }
-    );
+    });
   }
 
   deleteTransfer(id: number): void {
